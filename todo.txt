@@ -1,0 +1,6 @@
+Checklist
+1. Accomplish the base logic
+2. Create levels
+3. Create Menu
+4. Power ups
+5. Ascii Art
