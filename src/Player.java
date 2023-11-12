@@ -1,6 +1,6 @@
 public class Player {
     private int health, token, score;
-    Player(){
+    public Player(){
         health = 3;
         token = 0;
         score = 0;
