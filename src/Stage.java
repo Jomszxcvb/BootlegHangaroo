@@ -1,6 +1,6 @@
 
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
+
 public class Stage {
     private final String word = "testing";
     private int level;
@@ -19,14 +19,44 @@ public class Stage {
         }
         while(player.getHealth()!=0 ){
             System.out.println("Guess the word: ");
-            for(int i=0; i<wordIntoCharArray.length; i++){
-                System.out.print(wordIntoCharArray[i]);
-                if(i<wordIntoCharArray.length-1){
-                    System.out.print(" ");
+
+            for (int i = 0; i < wordIntoCharArray.length; i++) {
+                if (containsIndex(blankLettersIndexes, i)) {
+                    System.out.print("_ ");
+                } else {
+                    System.out.print(wordIntoCharArray[i] + " ");
                 }
             }
 
-        }
+            String userInput = scanner.next();
+            char[] userChars = userInput.toCharArray();
+
+            for (int i = 0; i < userChars.length; i++) {
+                wordIntoCharArray[blankLettersIndexes[i]] = userChars[i];
+            }
+
+            if (String.valueOf(wordIntoCharArray).equals(word)) {
+                System.out.println("Congratulations! You guessed the word.");
+                break;
+            }
+            else{
+                player.decreaseHealth();
+                System.out.println("Wrong! You have " + player.getHealth() + " health left.");
+            }
         stageNumber += 1;
+    }
+}
+    private boolean containsIndex(int[] blankLettersIndexes, int index) {
+        for (int i : blankLettersIndexes) {
+            if (i == index) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static void main(String[] args) {
+        Player player = new Player();
+        Stage stage = new Stage(player, 1);
     }
 }
