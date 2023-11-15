@@ -2,12 +2,25 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.Scanner;
+import java.util.Collections;
 
+
+/**
+ * This class is responsible for generating a random word from a text file.
+ * The text file is chosen based on the difficulty of the game.
+ * 
+ * @author J.R. Sabater 
+ */
 public class WordGenerator {
     private List<String> words;
+    static int counter = 0;
 
+    /**
+     * Constructor for objects of class WordGenerator
+     * Stores 
+     * @param difficulty
+     */
     public WordGenerator(Constant.Difficulty difficulty) {
         this.words = new ArrayList<>();
 
@@ -28,13 +41,16 @@ public class WordGenerator {
                     break;
             }
 
+            // Read from file
             File file = new File(filePath);
             Scanner scanner = new Scanner(file);
             while (scanner.hasNextLine()) {
-                String word = scanner.nextLine();
-                this.words.add(word);
+                String line = scanner.nextLine();
+                this.words.add(line);
             }
             scanner.close();
+
+            shuffleWords();
 
         } catch (FileNotFoundException e) {
             System.out.println("Words file not found.");
@@ -42,8 +58,17 @@ public class WordGenerator {
     }
 
     public String generateWord() {
-        Random random = new Random();
-        int index = random.nextInt(this.words.size());
-        return this.words.get(index);
+        return words.get(counter++);
+    }
+
+    public void shuffleWords() {
+        Collections.shuffle(this.words);
+    }
+
+    public static void main(String[] args) {
+        WordGenerator wordGenerator = new WordGenerator(Constant.Difficulty.EASY);
+        while (WordGenerator.counter < wordGenerator.words.size()) {
+            System.out.println(wordGenerator.generateWord());
+        }
     }
 }
