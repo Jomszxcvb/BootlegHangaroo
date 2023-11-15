@@ -1,5 +1,7 @@
 public class Player {
+    private String name;
     private int health, token, score;
+    
     public Player(){
         health = 3;
         token = 0;
@@ -14,6 +16,10 @@ public class Player {
     public int getScore() {
         return score;
     }
+    public String getName() {
+        return name;
+    }
+    
     public void decreaseHealth(){
         health -= 1;
     }
