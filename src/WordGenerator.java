@@ -65,10 +65,12 @@ public class WordGenerator {
         Collections.shuffle(this.words);
     }
 
+    /** TEST CODE
     public static void main(String[] args) {
         WordGenerator wordGenerator = new WordGenerator(Constant.Difficulty.EASY);
         while (WordGenerator.counter < wordGenerator.words.size()) {
             System.out.println(wordGenerator.generateWord());
         }
     }
+    */
 }
