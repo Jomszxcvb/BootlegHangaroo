@@ -1,11 +1,19 @@
 public class Player {
     private String name;
-    private int health, token, score;
+    private int health;
+    private int token;
+    private int score;
+
+    public static final int MAX_HEALTH = 3;
+    public static final int MIN_HEALTH = 0;
+    public static final int MIN_TOKEN = 0;
+    public static final int MIN_SCORE = 0;
+    
     
     Player(){
-        health = 3;
-        token = 0;
-        score = 0;
+        health = MAX_HEALTH;
+        token = MIN_TOKEN;
+        score = MIN_SCORE;
     }
 
     Player (String name, int score){
@@ -45,10 +53,8 @@ public class Player {
     public void incHealth(int x){
         health += x;
     }
-    
+
     public void incScore() {
         score += 1;
     }
-
-
 }
