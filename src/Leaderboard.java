@@ -10,7 +10,9 @@ import org.w3c.dom.NodeList;
 import org.w3c.dom.Node;
 import org.w3c.dom.Element;
 import java.io.File;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
@@ -24,6 +26,11 @@ import java.util.Comparator;
  * and writing the updated leaderboard back to the XML file.
  * </p>
  *
+ * <p>
+ * This class employs the Document Object Model (DOM) for XML processing and
+ * uses a list of Player objects to represent the current state of the leaderboard.
+ * </p>
+ *
  * @author Jommel Sabater
  */
 class Leaderboard {
@@ -31,7 +38,7 @@ class Leaderboard {
     /**
      * The list of Player objects representing the leaderboard.
      */
-    private List<Player> players;
+    private List<Player> players = new ArrayList<Player>();
 
     /**
      * The file object representing the XML file used to store the leaderboard.
@@ -41,7 +48,7 @@ class Leaderboard {
     /**
      * The path to the default leaderboard XML file.
      */
-    public static final String LEADERBOARD_PATH = "Leaderboard.xml";
+    public static final String LEADERBOARD_PATH = "BootlegHangaroo/AppData/Leaderboard/Leaderboard.xml";
 
     /**
      * Enum representing values used in leaderboard operations.
@@ -159,6 +166,11 @@ class Leaderboard {
         try {
             // Initialize the file object representing the XML file
             leaderboardFile = new File(LEADERBOARD_PATH);
+            
+            // Ensure the file exists or create a new one
+            if (!leaderboardFile.exists()) {
+                leaderboardFile.createNewFile();
+            }
 
             // Create a DocumentBuilder to parse the XML file using DOM
             DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
@@ -180,7 +192,11 @@ class Leaderboard {
                     int score = Integer.parseInt(eElement.getElementsByTagName(TagName.SCORE.getTagName()).item(0).getTextContent());
                     
                     // Create a new Player object and add it to the list of players
-                    players.add(new Player(name, score));
+                    if (name != null && score != 0) {
+                        players.add(new Player(name, score));
+                    } else {
+                        break;
+                    }
                 }
             }
         } catch (Exception e) {
@@ -223,25 +239,37 @@ class Leaderboard {
      * @throws Exception If an error occurs during the update process.
      */
     public void updateLeaderboard(Player currPlayer) {
-        // Check if the player with the same name already exists in the leaderboard
-        for (Player player : players) {
+        Iterator<Player> iterator = players.iterator();
+        boolean playerExists = false;
+
+        // Iterate through the list of players
+        while (iterator.hasNext()) {
+            Player player = iterator.next();
+
+            // If a player with the same name exists, update the player's score
             if (player.getName().equals(currPlayer.getName())) {
-                // Update the existing player's score
                 player.setScore(currPlayer.getScore());
-            }
-            else {
-                // Add the current player to the leaderboard if not found
-                players.add(currPlayer);
+                playerExists = true;
             }
         }
 
+        // If the player does not exist, add the player to the list
+        if (!playerExists) {
+            players.add(currPlayer);
+        }
+
         // Sort the players based on scores in descending order
-        Collections.sort(players.subList(LeaderboardValue.MIN.getValue(), LeaderboardValue.MAX.getValue()), 
+        Collections.sort(players.subList(LeaderboardValue.MIN.getValue(), players.size()), 
             new Comparator<Player>() {
                 public int compare(Player p1, Player p2) {
                     return Integer.compare(p2.getScore(), p1.getScore());
                 }
             });
+        
+        // Limit the number of players to the maximum allowed
+        if (players.size() > LeaderboardValue.MAX.getValue()) {
+            players = players.subList(LeaderboardValue.MIN.getValue(), LeaderboardValue.MAX.getValue());
+        }
 
         try {
             // Create a new XML document
@@ -254,7 +282,7 @@ class Leaderboard {
             doc.appendChild(rootElement);
 
             // Iterate through the sorted players and create XML elements for each player
-            for (Player player : players.subList(LeaderboardValue.MIN.getValue(), LeaderboardValue.MAX.getValue())) {
+            for (Player player : players.subList(LeaderboardValue.MIN.getValue(), players.size())) {
                 Element playerElement = doc.createElement(TagName.PLAYER.getTagName());
                 rootElement.appendChild(playerElement);
                 Element nameElement = doc.createElement(TagName.NAME.getTagName());
@@ -264,7 +292,10 @@ class Leaderboard {
                 scoreElement.appendChild(doc.createTextNode(Integer.toString(player.getScore())));
                 playerElement.appendChild(scoreElement);
 
+                // Normalize the document before writing to file
                 doc.getDocumentElement().normalize();
+
+                // Transform the document to XML and write to the leaderboard file
                 TransformerFactory transformerFactory = TransformerFactory.newInstance();
                 Transformer transformer = transformerFactory.newTransformer();
                 DOMSource source = new DOMSource(doc);
@@ -276,5 +307,11 @@ class Leaderboard {
         }
     }
 
-
+    /** TEST CODE
+    public static void main(String[] args) {
+        Leaderboard leaderboard = new Leaderboard();
+        Player player = new Player("Jommel", 10);
+        leaderboard.updateLeaderboard(player);
+    }
+    */
 }
