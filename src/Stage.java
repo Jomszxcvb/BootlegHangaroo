@@ -2,53 +2,74 @@
 import java.util.*;
 
 public class Stage {
-    private final String word = "testing";
-    private int level;
+    private String Word;
+    private Map<Character, List<Integer>> charIndexMap;
     private static int stageNumber = 1;
-    Stage(Player player, int level){
-        Random random = new Random();
-        Scanner scanner = new Scanner(System.in);
-        int blankLettersSize = random.nextInt(word.length()) + 1; //This may need to be changed in order to adjust proper game difficulty
-        int[] blankLettersIndexes = new int[blankLettersSize];
-        for(int i=0; i<blankLettersSize; i++){
-            blankLettersIndexes[i] = random.nextInt(word.length());
-        }
-        char[] wordIntoCharArray = word.toCharArray();
-        for (int blankLettersIndex : blankLettersIndexes) {
-            wordIntoCharArray[blankLettersIndex] = '_';
-        }
-        while(player.getHealth()!=0 ){
-            System.out.println("Guess the word: ");
-
-            for (int i = 0; i < wordIntoCharArray.length; i++) {
-                if (containsIndex(blankLettersIndexes, i)) {
-                    System.out.print("_ ");
-                } else {
-                    System.out.print(wordIntoCharArray[i] + " ");
-                }
-            }
-
-            String userInput = scanner.next();
-            char[] userChars = userInput.toCharArray();
-
-            for (int i = 0; i < userChars.length; i++) {
-                wordIntoCharArray[blankLettersIndexes[i]] = userChars[i];
-            }
-
-            if (String.valueOf(wordIntoCharArray).equals(word)) {
-                System.out.println("Congratulations! You guessed the word.");
-                break;
+    Stage(Player player, Constant.Difficulty level){
+        WordGenerator wordGenerator = new WordGenerator(level);
+        Word = wordGenerator.generateWord();
+        charIndexMap = getCharIndexMap(Word, level);
+        while(player.getHealth() != 0 && !charIndexMap.isEmpty()) {
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Stage " + stageNumber);
+            System.out.println("Guess the word ");
+            System.out.println(getWordWithBlanks(Word, charIndexMap));
+            char guess = scanner.next().charAt(0);
+            if(charIndexMap.containsKey(guess)){
+                System.out.println("Correct");
+                player.incScore();
+                stageNumber++;
+                charIndexMap.remove(guess);
             }
             else{
-                player.decreaseHealth();
-                System.out.println("Wrong! You have " + player.getHealth() + " health left.");
+                System.out.println("Wrong");
+                player.decHealth();
             }
-        stageNumber += 1;
+        }
+
     }
-}
-    private boolean containsIndex(int[] blankLettersIndexes, int index) {
-        for (int i : blankLettersIndexes) {
-            if (i == index) {
+
+    private String getWordWithBlanks(String string, Map<Character, List<Integer>> charIndexMap) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < string.length(); i++) {
+            if (charIndexMap.containsKey(string.charAt(i))) {
+                stringBuilder.append("_ ");
+            } else {
+                stringBuilder.append(string.charAt(i)+" ");
+            }
+        }
+        return stringBuilder.toString();
+
+    }
+
+    private Map<Character, List<Integer>> getCharIndexMap(String string, Constant.Difficulty level){
+        Random random = new Random();
+        int limit = switch (level) {
+            case EASY -> 3;
+            case MEDIUM -> 2;
+            case HARD -> 1;
+        };
+        int blockedCharactersSize = random.nextInt(string.length()-limit) + 1;
+        int[] blockedCharactersIndexes = new int[blockedCharactersSize];
+        Map<Character, List<Integer>> IndexMap = new HashMap<>();
+        for (int i = 0; i < blockedCharactersSize; i++) {
+            int index = random.nextInt(string.length());
+            if (containsIndex(blockedCharactersIndexes, index)) {
+                i--;
+            } else {
+                blockedCharactersIndexes[i] = index;
+            }
+        }
+        for (int i = 0; i < blockedCharactersIndexes.length; i++) {
+            char currentChar = string.charAt(blockedCharactersIndexes[i]);
+            IndexMap.computeIfAbsent(currentChar, k -> new ArrayList<>());
+            IndexMap.get(currentChar).add(i);
+        }
+       return IndexMap;
+    }
+    private boolean containsIndex(int[] blockedCharactersIndexes, int index) {
+        for (int blockedCharactersIndex : blockedCharactersIndexes) {
+            if (blockedCharactersIndex == index) {
                 return true;
             }
         }
@@ -57,6 +78,11 @@ public class Stage {
 
     public static void main(String[] args) {
         Player player = new Player();
-        Stage stage = new Stage(player, 1);
+        Stage stage = new Stage(player, Constant.Difficulty.EASY);
     }
+
 }
+
+
+
+
