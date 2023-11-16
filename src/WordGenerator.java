@@ -1,75 +1,154 @@
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Scanner;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
+
 import java.util.Collections;
 
 
 /**
- * This class is responsible for generating a random word from a text file.
- * The text file is chosen based on the difficulty of the game.
+ * The {@code WordGenerator} class is responsible for generating random words from XML files
+ * based on the difficulty level of the game. It reads words from separate files for
+ * easy, medium, and hard difficulty levels and provides methods to generate lists
+ * of words for different game modes.
  * 
- * @author J.R. Sabater 
+ * The XML file structure is assumed to have the following format:
+ * <pre> {@code
+ * <words>
+ *  <word difficulty="easy">
+ *      <name>ExampleWord</name>
+ *      <description>Example description for the word.</description>
+ *  </word>
+ *  <!-- Additional word entries -->
+ * </words>
+ * }</pre>
+ * 
+ * The class includes constants for file paths.
+ * It also maintains separate lists of words for each difficulty level.
+ * 
+ * @author J.R. Sabater
+ * @version 1.0
  */
 public class WordGenerator {
-    private List<String> words;
-    static int counter = 0;
 
     /**
-     * Constructor for objects of class WordGenerator
-     * Stores 
-     * @param difficulty
+     * Enumeration representing different file paths for each difficulty level.
      */
-    public WordGenerator(Constant.Difficulty difficulty) {
-        this.words = new ArrayList<>();
+    public static enum FilePath {
+        EASY_PATH("BootlegHangaroo/AppData/Words/Easy.xml"),
+        MEDIUM_PATH("BootlegHangaroo/AppData/Words/Medium.xml"),
+        HARD_PATH("BootlegHangaroo/AppData/Words/Hard.xml");
 
-        try {
-            String filePath;
-            switch (difficulty) {
-                case EASY:
-                    filePath = "Words/Easy.txt";
-                    break;
-                case MEDIUM:
-                    filePath = "Words/Medium.txt";
-                    break;
-                case HARD:
-                    filePath = "Words/Hard.txt";
-                    break;
-                default:
-                    filePath = "Words/Easy.txt";
-                    break;
-            }
+        private String path;
 
-            // Read from file
-            File file = new File(filePath);
-            Scanner scanner = new Scanner(file);
-            while (scanner.hasNextLine()) {
-                String line = scanner.nextLine();
-                this.words.add(line);
-            }
-            scanner.close();
+        FilePath(String path) {
+            this.path = path;
+        }
 
-            shuffleWords();
-
-        } catch (FileNotFoundException e) {
-            System.out.println("Words file not found.");
+        public String getPath() {
+            return path;
         }
     }
 
-    public String generateWord() {
-        return words.get(counter++);
+    private List<Word> easyWords = new ArrayList<Word>();
+    private List<Word> mediumWords = new ArrayList<Word>();
+    private List<Word> hardWords = new ArrayList<Word>();
+
+    private File wordsFile;
+
+    /**
+     * Constructor for WordGenerator class. Reads words from XML files
+     * for each difficulty level and initializes word lists.
+     */
+    public WordGenerator() {
+        try {
+            for (String path : Arrays.asList(FilePath.EASY_PATH.getPath(), FilePath.MEDIUM_PATH.getPath(), FilePath.HARD_PATH.getPath())) {
+                
+                this.wordsFile = new File(path);
+
+                DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
+                DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
+                Document doc = dBuilder.parse(this.wordsFile);
+                doc.getDocumentElement().normalize();
+
+                NodeList nList = doc.getElementsByTagName(Word.TagName.WORD.getTagName());
+
+                for (int i = 0; i < nList.getLength(); i++) {
+                    Node nNode = nList.item(i);
+                    Element eElement = (Element) nNode;
+
+                    String difficulty = eElement.getAttribute("difficulty");
+                    String name = eElement.getElementsByTagName("name").item(0).getTextContent();
+                    String description = eElement.getElementsByTagName("description").item(0).getTextContent();
+
+                    switch (difficulty) {
+                        case "easy":
+                            this.easyWords.add(new Word(name, description));
+                            break;
+                        case "medium":
+                            this.mediumWords.add(new Word(name, description));
+                            break;
+                        case "hard":
+                            this.hardWords.add(new Word(name, description));
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            } 
+            Collections.shuffle(this.easyWords);
+            Collections.shuffle(this.mediumWords);
+            Collections.shuffle(this.hardWords);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
-    public void shuffleWords() {
-        Collections.shuffle(this.words);
+    /**
+     * Generates a list of words based on the specified game mode.
+     * 
+     * @param gameMode The game mode for which words need to be generated.
+     * @return A list of words for the specified game mode.
+     */
+    public List<Word> generateWords(GameMode gameMode) {
+        List<Word> words = new ArrayList<Word>();
+
+        if (gameMode == GameMode.CLASSIC) {
+            for (int i = 0; i < GameMode.CLASSIC.MAX_WORDS_PER_DIFFICULTY; i++) {
+                words.add(this.easyWords.get(i));
+                words.add(this.mediumWords.get(i));
+                words.add(this.hardWords.get(i));
+            }
+            Collections.shuffle(words);
+            return words;
+        } 
+        else if (gameMode == GameMode.SURVIVAL){
+            for (int i = 0; i < GameMode.SURVIVAL.MAX_WORDS_PER_DIFFICULTY; i++) {
+                words.add(this.easyWords.get(i));
+                words.add(this.mediumWords.get(i));
+                words.add(this.hardWords.get(i));
+            }
+            Collections.shuffle(words);
+            return words;
+        }
+        return null;
     }
 
-    /** TEST CODE
+    /**
+     * TEST CODE
     public static void main(String[] args) {
-        WordGenerator wordGenerator = new WordGenerator(Constant.Difficulty.EASY);
-        while (WordGenerator.counter < wordGenerator.words.size()) {
-            System.out.println(wordGenerator.generateWord());
+        WordGenerator wordGenerator = new WordGenerator();
+        List<Word> words = wordGenerator.generateWords(GameMode.CLASSIC);
+        for (Word word : words) {
+            System.out.println(word.getWord());
         }
     }
     */
