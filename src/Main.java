@@ -5,7 +5,7 @@ public class Main {
 
         Player player = new Player();
         Stage stage = new Stage(player, Constant.Difficulty.EASY);
-
+        stage.play();
 
 
     }

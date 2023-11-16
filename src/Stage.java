@@ -29,7 +29,7 @@ public class Stage {
 
     }
 
-    private String getWordWithBlanks(String string, Map<Character, List<Integer>> charIndexMap) {
+    private String getWordWithBlanks(String string, Map<Character, List<Integer>> charIndexMap) { //Returns a new string using string builder for printing with blanks and spaces ex. T E S T I N G -> _ _ S _ _ _ _
         StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < string.length(); i++) {
             if (charIndexMap.containsKey(string.charAt(i))) {
@@ -42,14 +42,14 @@ public class Stage {
 
     }
 
-    private Map<Character, List<Integer>> getCharIndexMap(String string, Constant.Difficulty level){
+    private Map<Character, List<Integer>> getCharIndexMap(String string, Constant.Difficulty level){ //Returns a map of the characters and their indexes ex. 'a' -> 1,3,4 'b' -> 2,5
         Random random = new Random();
         int limit = switch (level) {
             case EASY -> 3;
             case MEDIUM -> 2;
             case HARD -> 1;
         };
-        int blockedCharactersSize = random.nextInt(string.length()-limit) + 1;
+        int blockedCharactersSize = random.nextInt(string.length()-limit) + 1; //Random number of blocked characters limit depends on difficulty level
         int[] blockedCharactersIndexes = new int[blockedCharactersSize];
         Map<Character, List<Integer>> IndexMap = new HashMap<>();
         for (int i = 0; i < blockedCharactersSize; i++) {
@@ -67,7 +67,7 @@ public class Stage {
         }
        return IndexMap;
     }
-    private boolean containsIndex(int[] blockedCharactersIndexes, int index) {
+    private boolean containsIndex(int[] blockedCharactersIndexes, int index) { // Helper function for getCharIndexMap to check if the index is already in the array
         for (int blockedCharactersIndex : blockedCharactersIndexes) {
             if (blockedCharactersIndex == index) {
                 return true;
