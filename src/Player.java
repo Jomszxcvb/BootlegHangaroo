@@ -5,7 +5,7 @@ public class Player {
     private int score;
 
     public static final int MAX_HEALTH = 3;
-    public static final int MIN_HEALTH = 0;
+    public static final int NO_HEALTH = 0;
     public static final int MIN_TOKEN = 0;
     public static final int MIN_SCORE = 0;
     
