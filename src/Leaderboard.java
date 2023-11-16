@@ -17,7 +17,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 /**
- * The Leaderboard class manages a list of Player objects and provides methods
+ * The {@code Leaderboard} class manages a list of {@code Player} objects and provides methods
  * to update and retrieve information from a leaderboard stored in an XML file.
  *
  * <p>
@@ -28,15 +28,16 @@ import java.util.Comparator;
  *
  * <p>
  * This class employs the Document Object Model (DOM) for XML processing and
- * uses a list of Player objects to represent the current state of the leaderboard.
+ * uses a list of {@code Player} objects to represent the current state of the leaderboard.
  * </p>
  *
  * @author Jommel Sabater
+ * @version 1.0
  */
 class Leaderboard {
 
     /**
-     * The list of Player objects representing the leaderboard.
+     * The list of {@code Player} objects representing the leaderboard.
      */
     private List<Player> players = new ArrayList<Player>();
 
@@ -48,7 +49,19 @@ class Leaderboard {
     /**
      * The path to the default leaderboard XML file.
      */
-    public static final String LEADERBOARD_PATH = "BootlegHangaroo/AppData/Leaderboard/Leaderboard.xml";
+    public static enum FilePath {
+        LEADERBOARD_PATH("BootlegHangaroo/AppData/Leaderboard/Leaderboard.xml");
+
+        private String path;
+
+        FilePath(String path) {
+            this.path = path;
+        }
+
+        public String getPath() {
+            return path;
+        }
+    }
 
     /**
      * Enum representing values used in leaderboard operations.
@@ -128,13 +141,13 @@ class Leaderboard {
     }
 
     /**
-     * Constructs a new Leaderboard object by reading the existing XML file and
-     * populating the list of players.
+     * Constructs a new {@code Leaderboard} object by reading the existing XML file and
+     * populating the list of {@code Player}s.
      * 
      * <p>
-     * This constructor initializes a Leaderboard object by parsing an XML file
+     * This constructor initializes a {@code Leaderboard} object by parsing an XML file
      * representing the current state of the leaderboard. It reads the player data
-     * from the XML file and creates corresponding Player objects, populating the
+     * from the XML file and creates corresponding {@code Player} objects, populating the
      * list of players within the leaderboard.
      * </p>
      * 
@@ -147,7 +160,7 @@ class Leaderboard {
      * 
      * <p>
      * For each player element in the XML file, the constructor extracts the name
-     * and score information and creates a new Player object. These Player objects
+     * and score information and creates a new {@code Player} object. These {@code Player} objects
      * are then added to the internal list of players, providing an in-memory
      * representation of the leaderboard.
      * </p>
@@ -165,7 +178,7 @@ class Leaderboard {
     Leaderboard() {
         try {
             // Initialize the file object representing the XML file
-            leaderboardFile = new File(LEADERBOARD_PATH);
+            leaderboardFile = new File(FilePath.LEADERBOARD_PATH.getPath());
             
             // Ensure the file exists or create a new one
             if (!leaderboardFile.exists()) {
@@ -205,10 +218,10 @@ class Leaderboard {
     }
 
     /**
-     * Updates the leaderboard with the provided Player object.
+     * Updates the leaderboard with the provided {@code Player} object.
      * 
      * <p>
-     * This method takes a Player object representing a player's current state and
+     * This method takes a {@code Player} object representing a player's current state and
      * updates the leaderboard accordingly. If a player with the same name already
      * exists in the leaderboard, the method updates that player's score. Otherwise,
      * it adds the current player to the leaderboard. After the update, the method
@@ -235,7 +248,7 @@ class Leaderboard {
      * of concurrent updates.
      * </p>
      * 
-     * @param currPlayer The Player object to be updated or added to the leaderboard.
+     * @param currPlayer The {@code Player} object to be updated or added to the leaderboard.
      * @throws Exception If an error occurs during the update process.
      */
     public void updateLeaderboard(Player currPlayer) {
