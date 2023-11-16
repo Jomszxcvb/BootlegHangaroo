@@ -1,7 +1,7 @@
 import java.util.HashMap;
 
 /**
- * The Word class represents a word in a word-guessing game, including its
+ * The {@code Word} class represents a word in the word-guessing game, including its
  * description and the state of guessed letters.
  * 
  * <p>
@@ -11,14 +11,49 @@ import java.util.HashMap;
  * </p>
  * 
  * <p>
- * The class uses a HashMap to keep track of each letter in the word and whether
+ * The class uses a {@code HashMap} to keep track of each letter in the word and whether
  * it has been guessed. The key-value pairs consist of the letter and a boolean
  * indicating whether the letter has been guessed (true) or not (false).
  * </p>
  * 
  * @author Jommel Sabater
+ * @version 1.0
  */
 public class Word {
+    
+    /**
+     * Enumeration representing XML tag names.
+     */
+    public static enum TagName {
+        WORD("word"), DESCRIPTION("description");
+
+        private final String tagName;
+
+        TagName(String tagName) {
+            this.tagName = tagName;
+        }
+
+        public String getTagName() {
+            return tagName;
+        }
+    }
+
+    /**
+     * Enumeration representing XML attribute names.
+     */
+    public static enum Attributes {
+        DIFFICULTY("difficulty");
+
+        private final String attribute;
+
+        Attributes(String attribute) {
+            this.attribute = attribute;
+        }
+
+        public String getAttribute() {
+            return attribute;
+        }
+    }
 
     /**
      * The actual word to be guessed.
@@ -31,7 +66,7 @@ public class Word {
     private String description;
 
     /**
-     * A HashMap to track the guessed state of each letter in the word.
+     * A {@code HashMap} to track the guessed state of each letter in the word.
      * 
      * <p>
      * The keys are characters representing individual letters in the word, and the
@@ -42,8 +77,8 @@ public class Word {
     private HashMap<Character, Boolean> letters;
 
     /**
-     * Constructs a new Word object with the specified word and description.
-     * Initializes the letters HashMap with each letter in the word set to false
+     * Constructs a new {@code Word} object with the specified word and description.
+     * Initializes the letters {@code HashMap} with each letter in the word set to false
      * (not guessed).
      * 
      * @param word        The word to be guessed.
@@ -61,7 +96,7 @@ public class Word {
     }
 
     /**
-     * Sets a new word for the Word object.
+     * Sets a new word for the {@code Word} object.
      * 
      * @param word The new word to be set.
      */
@@ -70,7 +105,7 @@ public class Word {
     }
 
     /**
-     * Sets a new description for the Word object.
+     * Sets a new description for the {@code Word} object.
      * 
      * @param description The new description to be set.
      */
@@ -107,7 +142,7 @@ public class Word {
     }
 
     /**
-     * Retrives the state of guessed letters in the word.
+     * Retrieves the state of guessed letters in the word.
      * 
      * <p>
      * Constructs a string representing the current state of guessed letters in the
@@ -136,7 +171,7 @@ public class Word {
      * 
      * <p>
      * If the guessed letter is in the word, the method updates the corresponding
-     * entry in the letters HashMap to true and returns true. If the guessed letter
+     * entry in the letters {@code HashMap} to true and returns true. If the guessed letter
      * is not in the word, the method returns false.
      * </p>
      * 
@@ -150,4 +185,20 @@ public class Word {
         }
         return false;
     }
+
+    /**
+     * TEST CODE
+    public static void main(String[] args) {
+        Word word = new Word("hello", "A greeting.");
+        System.out.println(word.retrieveGuessedLetters());
+        word.guessLetter('h');
+        System.out.println(word.retrieveGuessedLetters());
+        word.guessLetter('e');
+        System.out.println(word.retrieveGuessedLetters());
+        word.guessLetter('l');
+        System.out.println(word.retrieveGuessedLetters());
+        word.guessLetter('o');
+        System.out.println(word.retrieveGuessedLetters());
+    }
+    */
 }
