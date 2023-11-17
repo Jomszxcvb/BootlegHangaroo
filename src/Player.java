@@ -67,10 +67,17 @@ public class Player {
         token -= 1;
     }
 
-    public char guess() {
+    public char getChar() {
         Scanner sc = new Scanner(System.in);
         char input = Character.toUpperCase(sc.next().charAt(0));
         sc.close();
         return input;
+    }
+
+    public void displayPlayerInfo() {
+        System.out.println("Name: " + name);
+        System.out.println("Health: " + health);
+        System.out.println("Token: " + token);
+        System.out.println("Score: " + score);
     }
 }
