@@ -4,12 +4,15 @@ import java.util.Scanner;
 public class Stage {
     private WordGenerator wordGenerator;
     private Word word;
+
     private static int stageNumber;
+
+    public static final int MIN_STAGE = 1;
 
     Stage(GameMode gameMode){
         wordGenerator = new WordGenerator(gameMode);
+        stageNumber = MIN_STAGE;
         word = wordGenerator.generateWord();
-        stageNumber = 1;
     }
 
     public static int getStageNumber() {
@@ -51,7 +54,7 @@ public class Stage {
         Stage stage = new Stage(GameMode.CLASSIC);
         stage.playStage(player);
     }
-    */
+     */
 }
 
 
