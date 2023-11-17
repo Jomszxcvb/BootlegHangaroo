@@ -62,13 +62,15 @@ public class WordGenerator {
     private List<Word> mediumWords = new ArrayList<Word>();
     private List<Word> hardWords = new ArrayList<Word>();
 
+    private List<Word> words = new ArrayList<Word>();
+
     private File wordsFile;
 
     /**
      * Constructor for WordGenerator class. Reads words from XML files
      * for each difficulty level and initializes word lists.
      */
-    public WordGenerator() {
+    public WordGenerator(GameMode gameMode) {
         try {
             for (String path : Arrays.asList(FilePath.EASY_PATH.getPath(), FilePath.MEDIUM_PATH.getPath(), FilePath.HARD_PATH.getPath())) {
                 
@@ -107,6 +109,7 @@ public class WordGenerator {
             Collections.shuffle(this.easyWords);
             Collections.shuffle(this.mediumWords);
             Collections.shuffle(this.hardWords);
+            generateWords(gameMode);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -118,8 +121,8 @@ public class WordGenerator {
      * @param gameMode The game mode for which words need to be generated.
      * @return A list of words for the specified game mode.
      */
-    public List<Word> generateWords(GameMode gameMode) {
-        List<Word> words = new ArrayList<Word>();
+    private void generateWords(GameMode gameMode) {
+        words = new ArrayList<Word>();
 
         if (gameMode == GameMode.CLASSIC) {
             for (int i = 0; i < GameMode.CLASSIC.MAX_WORDS_PER_DIFFICULTY; i++) {
@@ -128,7 +131,6 @@ public class WordGenerator {
                 words.add(this.hardWords.get(i));
             }
             Collections.shuffle(words);
-            return words;
         } 
         else if (gameMode == GameMode.SURVIVAL){
             for (int i = 0; i < GameMode.SURVIVAL.MAX_WORDS_PER_DIFFICULTY; i++) {
@@ -137,9 +139,11 @@ public class WordGenerator {
                 words.add(this.hardWords.get(i));
             }
             Collections.shuffle(words);
-            return words;
         }
-        return null;
+    }
+
+    public Word generateWord() {
+        return words.get(Stage.getStageNumber() - 1);
     }
 
     /**
