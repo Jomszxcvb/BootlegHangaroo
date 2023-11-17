@@ -190,10 +190,10 @@ public class Word {
      */
     public boolean guessLetter(char letter) {
         if (letters.containsKey(letter)) {
-            if (letters.values().stream().allMatch(Boolean::booleanValue)) {
+            letters.put(letter, true);
+            if (!letters.containsValue(false)) {
                 isGuessed = true;
             }
-            letters.put(letter, true);
             return true;
         }
         return false;
