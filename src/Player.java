@@ -18,6 +18,13 @@ public class Player {
         score = MIN_SCORE;
     }
 
+    Player (String name){
+        this.name = name;
+        health = MAX_HEALTH;
+        token = MIN_TOKEN;
+        score = MIN_SCORE;
+    }
+
     Player (String name, int score){
         this.name = name;
         this.score = score;
@@ -69,9 +76,7 @@ public class Player {
 
     public char getChar() {
         Scanner sc = new Scanner(System.in);
-        char input = Character.toUpperCase(sc.next().charAt(0));
-        sc.close();
-        return input;
+        char input = Character.toUpperCase(sc.next().charAt(0));        return input;
     }
 
     public void displayPlayerInfo() {
