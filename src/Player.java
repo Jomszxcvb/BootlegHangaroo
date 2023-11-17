@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 public class Player {
     private String name;
     private int health;
@@ -56,5 +58,19 @@ public class Player {
 
     public void incScore() {
         score += 1;
+    }
+
+    public void incToken() {
+        token += 1;
+    }
+    public void decToken() {
+        token -= 1;
+    }
+
+    public char guess() {
+        Scanner sc = new Scanner(System.in);
+        char input = Character.toUpperCase(sc.next().charAt(0));
+        sc.close();
+        return input;
     }
 }
