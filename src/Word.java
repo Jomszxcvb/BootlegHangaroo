@@ -64,6 +64,7 @@ public class Word {
      * The description of the word.
      */
     private String description;
+    private boolean isGuessed = false;
 
     /**
      * A {@code HashMap} to track the guessed state of each letter in the word.
@@ -142,6 +143,15 @@ public class Word {
     }
 
     /**
+     * Retrieves the state of the word.
+     * 
+     * @return True if the word has been guessed, false otherwise.
+     */
+    public boolean isGuessed() {
+        return isGuessed;
+    }
+
+    /**
      * Retrieves the state of guessed letters in the word.
      * 
      * <p>
@@ -180,6 +190,9 @@ public class Word {
      */
     public boolean guessLetter(char letter) {
         if (letters.containsKey(letter)) {
+            if (letters.values().stream().allMatch(Boolean::booleanValue)) {
+                isGuessed = true;
+            }
             letters.put(letter, true);
             return true;
         }
