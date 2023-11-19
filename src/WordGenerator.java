@@ -1,7 +1,5 @@
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -10,8 +8,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
-
-import java.util.Collections;
 
 /**
  * The {@code WordGenerator} class is responsible for generating random words from XML files
@@ -68,19 +64,17 @@ public class WordGenerator {
     }
 
     private static final int FIRST_INDEX = 0;
-    private final List<Word> easyWords;
-    private final List<Word> mediumWords;
-    private final List<Word> hardWords;
+    private final Stack<Word> easyWords;
+    private final Stack<Word> mediumWords;
+    private final Stack<Word> hardWords;
     /**
      * Constructor for WordGenerator class. Reads words from XML files
      * for each difficulty level and initializes word lists.
      */
     public WordGenerator(GameMode gameMode) {
-
-        easyWords = new ArrayList<Word>();
-        mediumWords = new ArrayList<Word>();
-        hardWords = new ArrayList<Word>();
-
+        easyWords = new Stack<>();
+        mediumWords = new Stack<>();
+        hardWords = new Stack<>();
         try {
             for (String path : Arrays.asList(FilePath.EASY_PATH.getPath(), FilePath.MEDIUM_PATH.getPath(), FilePath.HARD_PATH.getPath())) {
                 
@@ -103,13 +97,13 @@ public class WordGenerator {
 
                     switch (wordDifficulty.toLowerCase()) {
                         case "easy":
-                            easyWords.add(new Word(name, description, Difficulty.EASY));
+                            easyWords.push(new Word(name, description, Difficulty.EASY));
                             break;
                         case "medium":
-                            mediumWords.add(new Word(name, description, Difficulty.MEDIUM));
+                            mediumWords.push(new Word(name, description, Difficulty.MEDIUM));
                             break;
                         case "hard":
-                            hardWords.add(new Word(name, description, Difficulty.HARD));
+                            hardWords.push(new Word(name, description, Difficulty.HARD));
                             break;
                         default:
                             break;
@@ -131,44 +125,33 @@ public class WordGenerator {
      * @param difficulty The difficulty level for which to generate the word.
      * @return A randomly generated word.
      */
-    public Word generateWord(Difficulty difficulty) {
+    public Word generateWord(Difficulty difficulty){
         Word word = null;
-
-        if (difficulty == Difficulty.EASY) {
-            word = easyWords.get(FIRST_INDEX);
-            removeWord(difficulty, FIRST_INDEX);
-        } else if (difficulty == Difficulty.MEDIUM) {
-            word = mediumWords.get(FIRST_INDEX);
-            removeWord(difficulty, FIRST_INDEX);
-        } else if (difficulty == Difficulty.HARD) {
-            word = hardWords.get(FIRST_INDEX);
-            removeWord(difficulty, FIRST_INDEX);
-        }
-
+        switch(difficulty){
+            case Difficulty.EASY:
+                if (!easyWords.isEmpty()) {
+                    word = easyWords.pop();
+                }
+                break;
+            case Difficulty.MEDIUM:
+                if (!mediumWords.isEmpty()) {
+                   word = mediumWords.pop();
+                }
+                break;
+            case Difficulty.HARD:
+                if (!hardWords.isEmpty()) {
+                    word = hardWords.pop();
+                }
+                break;
+            }
         return word;
     }
 
-    /**
-     * Removes the specified word from the list of words for the given difficulty level.
-     * 
-     * @param difficulty The difficulty level of the word to be removed.
-     * @param index The index of the word to be removed.
-     */
-    private void removeWord(Difficulty difficulty, int index) {
-        if (difficulty == Difficulty.EASY) {
-            this.easyWords.remove(FIRST_INDEX);
-        } else if (difficulty == Difficulty.MEDIUM) {
-            this.mediumWords.remove(FIRST_INDEX);
-        } else if (difficulty == Difficulty.HARD) {
-            this.hardWords.remove(FIRST_INDEX);
-        }
-    }
-
-    public static void main(String[] args) {
-        WordGenerator wg = new WordGenerator(GameMode.CLASSIC);
-        for (int i = 0; i < 10; i++) {
-            System.out.println(wg.generateWord(Difficulty.EASY).getWord());
-        }
-        return;
-    }
+//    public static void main(String[] args) {
+//        WordGenerator wg = new WordGenerator(GameMode.CLASSIC);
+//        for (int i = 0; i < 10; i++) {
+//            System.out.println(wg.generateWord(Difficulty.EASY).getWord());
+//        }
+//        return;
+//    }
 }

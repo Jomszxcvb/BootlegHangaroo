@@ -78,9 +78,9 @@ public class Word {
         Random random = new Random();
         charIndexMap = new HashMap<>();
         int limit = switch (difficulty) {
-            case EASY -> 3;
-            case MEDIUM -> 2;
-            case HARD -> 1;
+            case EASY -> 2;
+            case MEDIUM -> 1;
+            case HARD -> 0;
         };
         int blockedCharactersSize = random.nextInt(word.length()-limit) + 1; //Random number of blocked characters limit depends on difficulty level
         int[] blockedCharactersIndexes = new int[blockedCharactersSize];
