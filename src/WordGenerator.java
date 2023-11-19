@@ -90,13 +90,13 @@ public class WordGenerator {
 
                 NodeList nList = doc.getElementsByTagName(Word.TagName.WORD.getTagName());
 
-                for (int i = FIRST_INDEX; i < nList.getLength(); i++) {
+                for (int i = 0; i < nList.getLength(); i++) {
                     Node nNode = nList.item(i);
                     Element eElement = (Element) nNode;
 
                     String difficulty = eElement.getAttribute("difficulty");
-                    String name = eElement.getElementsByTagName("name").item(FIRST_INDEX).getTextContent();
-                    String description = eElement.getElementsByTagName("description").item(FIRST_INDEX).getTextContent();
+                    String name = eElement.getElementsByTagName("name").item(0).getTextContent();
+                    String description = eElement.getElementsByTagName("description").item(0).getTextContent();
 
                     switch (difficulty) {
                         case "easy":
@@ -160,4 +160,15 @@ public class WordGenerator {
             this.hardWords.remove(FIRST_INDEX);
         }
     }
+
+    /** 
+     * TEST CODE
+    public static void main(String[] args) {
+        WordGenerator wg = new WordGenerator();
+        for (int i = 0; i < 10; i++) {
+            System.out.println(wg.generateWord(Difficulty.EASY).getWord());
+        }
+        return;
+    }
+    */
 }
