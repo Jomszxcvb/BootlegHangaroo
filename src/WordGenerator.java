@@ -26,7 +26,7 @@ import java.util.Collections;
  *      <name>ExampleWord</name>
  *      <description>Example description for the word.</description>
  *  </word>
- *  <!-- Additional word entries -->
+ *  //<!-- Additional word entries -->
  * </words>
  * }</pre>
  * 
@@ -68,16 +68,19 @@ public class WordGenerator {
     }
 
     private static final int FIRST_INDEX = 0;
-
-    private List<Word> easyWords = new ArrayList<Word>();
-    private List<Word> mediumWords = new ArrayList<Word>();
-    private List<Word> hardWords = new ArrayList<Word>();
-
+    private final List<Word> easyWords;
+    private final List<Word> mediumWords;
+    private final List<Word> hardWords;
     /**
      * Constructor for WordGenerator class. Reads words from XML files
      * for each difficulty level and initializes word lists.
      */
-    public WordGenerator() {
+    public WordGenerator(GameMode gameMode) {
+
+        easyWords = new ArrayList<Word>();
+        mediumWords = new ArrayList<Word>();
+        hardWords = new ArrayList<Word>();
+
         try {
             for (String path : Arrays.asList(FilePath.EASY_PATH.getPath(), FilePath.MEDIUM_PATH.getPath(), FilePath.HARD_PATH.getPath())) {
                 
@@ -94,19 +97,19 @@ public class WordGenerator {
                     Node nNode = nList.item(i);
                     Element eElement = (Element) nNode;
 
-                    String difficulty = eElement.getAttribute("difficulty");
+                    String wordDifficulty = eElement.getAttribute("difficulty");
                     String name = eElement.getElementsByTagName("name").item(0).getTextContent();
                     String description = eElement.getElementsByTagName("description").item(0).getTextContent();
 
-                    switch (difficulty) {
+                    switch (wordDifficulty.toLowerCase()) {
                         case "easy":
-                            this.easyWords.add(new Word(name, description, difficulty));
+                            easyWords.add(new Word(name, description, Difficulty.EASY));
                             break;
                         case "medium":
-                            this.mediumWords.add(new Word(name, description, difficulty));
+                            mediumWords.add(new Word(name, description, Difficulty.MEDIUM));
                             break;
                         case "hard":
-                            this.hardWords.add(new Word(name, description, difficulty));
+                            hardWords.add(new Word(name, description, Difficulty.HARD));
                             break;
                         default:
                             break;
@@ -132,13 +135,13 @@ public class WordGenerator {
         Word word = null;
 
         if (difficulty == Difficulty.EASY) {
-            word = this.easyWords.get(FIRST_INDEX);
+            word = easyWords.get(FIRST_INDEX);
             removeWord(difficulty, FIRST_INDEX);
         } else if (difficulty == Difficulty.MEDIUM) {
-            word = this.mediumWords.get(FIRST_INDEX);
+            word = mediumWords.get(FIRST_INDEX);
             removeWord(difficulty, FIRST_INDEX);
         } else if (difficulty == Difficulty.HARD) {
-            word = this.hardWords.get(FIRST_INDEX);
+            word = hardWords.get(FIRST_INDEX);
             removeWord(difficulty, FIRST_INDEX);
         }
 
@@ -161,14 +164,11 @@ public class WordGenerator {
         }
     }
 
-    /** 
-     * TEST CODE
     public static void main(String[] args) {
-        WordGenerator wg = new WordGenerator();
+        WordGenerator wg = new WordGenerator(GameMode.CLASSIC);
         for (int i = 0; i < 10; i++) {
             System.out.println(wg.generateWord(Difficulty.EASY).getWord());
         }
         return;
     }
-    */
 }

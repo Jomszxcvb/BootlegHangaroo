@@ -26,7 +26,6 @@ import java.util.ArrayList;
 public class Word {
 
     private Map<Character, List<Integer>> charIndexMap;
-    private String difficulty;
     /**
      * Enumeration representing XML tag names.
      */
@@ -72,26 +71,16 @@ public class Word {
     private String description;
     private boolean isGuessed;
 
-    private HashMap<Character, Boolean> letters;
-
-    /**
-     * Constructs a new {@code Word} object with the specified word and description.
-     * Initializes the letters {@code HashMap} with each letter in the word set to false
-     * (not guessed).
-     * 
-     * @param word        The word to be guessed.
-     * @param description The description of the word.
-     */
-    public Word(String word, String description, String difficulty) {
+    public Word(String word, String description, Difficulty difficulty) {
         this.word = word;
         this.description = description;
         isGuessed = false;
         Random random = new Random();
+        charIndexMap = new HashMap<>();
         int limit = switch (difficulty) {
-            case "easy" -> 1;
-            case "medium" -> 3;
-            case "hard" -> 5;
-            default -> 3;
+            case EASY -> 3;
+            case MEDIUM -> 2;
+            case HARD -> 1;
         };
         int blockedCharactersSize = random.nextInt(word.length()-limit) + 1; //Random number of blocked characters limit depends on difficulty level
         int[] blockedCharactersIndexes = new int[blockedCharactersSize];
@@ -204,27 +193,16 @@ public class Word {
     public boolean guessLetter(char letter) {
         if (charIndexMap.containsKey(letter)){
             charIndexMap.remove(letter);
+            if(charIndexMap.isEmpty()){
+                isGuessed = true;
+            }
             return true;
-        }
-        if(charIndexMap.isEmpty()){
-            isGuessed = true;
         }
         return false;
     }
 
-    /**
-     * TEST CODE
-    public static void main(String[] args) {
-        Word word = new Word("hello", "A greeting.");
-        System.out.println(word.retrieveGuessedLetters());
-        word.guessLetter('h');
-        System.out.println(word.retrieveGuessedLetters());
-        word.guessLetter('e');
-        System.out.println(word.retrieveGuessedLetters());
-        word.guessLetter('l');
-        System.out.println(word.retrieveGuessedLetters());
-        word.guessLetter('o');
-        System.out.println(word.retrieveGuessedLetters());
-    }
-    */
+//    public static void main(String[] args) {
+//        Word word = new Word("hello", "A greeting.", "easy");
+//        System.out.println(word.word);
+//    }
 }

@@ -2,27 +2,23 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Stage {
-    private Word word;
+    private final Word word;
     private static int stageNumber;
     public static final int MIN_STAGE = 1;
 
-    Stage(GameMode gameMode){
-        WordGenerator wordGenerator = new WordGenerator(gameMode);
+    Stage(WordGenerator wordGenerator, Difficulty difficulty){
         stageNumber = MIN_STAGE;
-        try{
-            word = wordGenerator.generateWord();
-        }
-        catch(Exception e){
-            e.printStackTrace();
-        }
+        word = wordGenerator.generateWord(difficulty);
     }
+
+
 
     public static int getStageNumber() {
         return stageNumber;
     }
 
     public void playStage(Player player) {
-        while (player.getHealth() != Player.NO_HEALTH) {
+        while (player.getHealth() != Player.NO_HEALTH && !word.isGuessed()) {
             if (!word.isGuessed()) {
                 System.out.println("Stage " + stageNumber);
                 player.displayPlayerInfo();
@@ -47,11 +43,6 @@ public class Stage {
 
 
     }
-    //Test Code
-
-//    public static void main(String[] args) {
-//        Player player = new Player("Jom");
-//    }
 }
 
 

@@ -76,7 +76,7 @@ public class Player {
 
     public char getChar() {
         Scanner sc = new Scanner(System.in);
-        char input = Character.toUpperCase(sc.next().charAt(0));        return input;
+        return Character.toUpperCase(sc.next().charAt(0));
     }
 
     public void displayPlayerInfo() {

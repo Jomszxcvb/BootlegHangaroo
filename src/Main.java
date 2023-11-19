@@ -3,9 +3,10 @@
 public class Main {
     public static void main(String[] args) {
 
-        Player player = new Player();
-        Stage stage = new Stage(player, Constant.Difficulty.EASY);
-        stage.play();
+        Player player = new Player("Jom");
+        WordGenerator wordGenerator = new WordGenerator(GameMode.CLASSIC);
+        Stage stage = new Stage(wordGenerator, Difficulty.EASY);
+        stage.playStage(player);
 
 
     }
