@@ -100,13 +100,13 @@ public class WordGenerator {
 
                     switch (difficulty) {
                         case "easy":
-                            this.easyWords.add(new Word(name, description));
+                            this.easyWords.add(new Word(name, description, difficulty));
                             break;
                         case "medium":
-                            this.mediumWords.add(new Word(name, description));
+                            this.mediumWords.add(new Word(name, description, difficulty));
                             break;
                         case "hard":
-                            this.hardWords.add(new Word(name, description));
+                            this.hardWords.add(new Word(name, description, difficulty));
                             break;
                         default:
                             break;
