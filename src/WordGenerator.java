@@ -147,6 +147,7 @@ public class WordGenerator {
         return word;
     }
 
+    /**
     public static void main(String[] args) {
         WordGenerator wg = new WordGenerator();
         for (int i = 0; i < 10; i++) {
@@ -154,4 +155,5 @@ public class WordGenerator {
         }
         return;
     }
+    */
 }
