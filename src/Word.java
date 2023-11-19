@@ -25,7 +25,6 @@ import java.util.ArrayList;
  */
 public class Word {
 
-    private Map<Character, List<Integer>> charIndexMap;
     /**
      * Enumeration representing XML tag names.
      */
@@ -69,45 +68,11 @@ public class Word {
      * The description of the word.
      */
     private String description;
-    private boolean isGuessed;
 
     public Word(String word, String description, Difficulty difficulty) {
         this.word = word;
         this.description = description;
-        isGuessed = false;
-        Random random = new Random();
-        charIndexMap = new HashMap<>();
-        int limit = switch (difficulty) {
-            case EASY -> 2;
-            case MEDIUM -> 1;
-            case HARD -> 0;
-        };
-        int blockedCharactersSize = random.nextInt(word.length()-limit) + 1; //Random number of blocked characters limit depends on difficulty level
-        int[] blockedCharactersIndexes = new int[blockedCharactersSize];
-        for (int i = 0; i < blockedCharactersSize; i++) {
-            int index = random.nextInt(word.length());
-            if (containsIndex(blockedCharactersIndexes, index)) {
-                i--;
-            } else {
-                blockedCharactersIndexes[i] = index;
-            }
-        }
-        for (int i = 0; i < blockedCharactersIndexes.length; i++) {
-            char currentChar = word.charAt(blockedCharactersIndexes[i]);
-            charIndexMap.computeIfAbsent(currentChar, k -> new ArrayList<>());
-            charIndexMap.get(currentChar).add(i);
-        }
     }
-
-    private boolean containsIndex(int[] blockedCharactersIndexes, int index) { // Helper function for getCharIndexMap to check if the index is already in the array
-        for (int blockedCharactersIndex : blockedCharactersIndexes) {
-            if (blockedCharactersIndex == index) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     /**
      * Sets a new word for the {@code Word} object.
      * 
@@ -149,9 +114,7 @@ public class Word {
      * 
      * @return True if the word has been guessed, false otherwise.
      */
-    public boolean isGuessed() {
-        return isGuessed;
-    }
+
 
     /**
      * Retrieves the state of guessed letters in the word.
@@ -164,17 +127,7 @@ public class Word {
      * 
      * @return A string displaying guessed and unguessed letters.
      */
-    public String retrieveGuessedLetters() {
-        StringBuilder stringBuilder = new StringBuilder();
-        for (int i = 0; i < word.length(); i++) {
-            if (charIndexMap.containsKey(word.charAt(i))) {
-                stringBuilder.append("_ ");
-            } else {
-                stringBuilder.append(word.charAt(i)).append(" ");
-            }
-        }
-        return stringBuilder.toString();
-    }
+
 
 
 
@@ -190,16 +143,7 @@ public class Word {
      * @param letter The letter guessed by the player.
      * @return True if the letter is in the word, false otherwise.
      */
-    public boolean guessLetter(char letter) {
-        if (charIndexMap.containsKey(letter)){
-            charIndexMap.remove(letter);
-            if(charIndexMap.isEmpty()){
-                isGuessed = true;
-            }
-            return true;
-        }
-        return false;
-    }
+
 
 //    public static void main(String[] args) {
 //        Word word = new Word("hello", "A greeting.", "easy");
