@@ -1,4 +1,8 @@
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.ArrayList;
 
 /**
  * The {@code Word} class represents a word in the word-guessing game, including its
@@ -20,7 +24,9 @@ import java.util.HashMap;
  * @version 1.0
  */
 public class Word {
-    
+
+    private Map<Character, List<Integer>> charIndexMap;
+    private String difficulty;
     /**
      * Enumeration representing XML tag names.
      */
@@ -64,17 +70,8 @@ public class Word {
      * The description of the word.
      */
     private String description;
-    private boolean isGuessed = false;
+    private boolean isGuessed;
 
-    /**
-     * A {@code HashMap} to track the guessed state of each letter in the word.
-     * 
-     * <p>
-     * The keys are characters representing individual letters in the word, and the
-     * values are booleans indicating whether the corresponding letter has been
-     * guessed (true) or not (false).
-     * </p>
-     */
     private HashMap<Character, Boolean> letters;
 
     /**
@@ -85,15 +82,41 @@ public class Word {
      * @param word        The word to be guessed.
      * @param description The description of the word.
      */
-    public Word(String word, String description) {
+    public Word(String word, String description, String difficulty) {
         this.word = word;
         this.description = description;
-        
-        // Initialize the letters HashMap with each letter set to false
-        letters = new HashMap<>();
-        for (int i = 0; i < word.length(); i++) {
-            letters.put(word.charAt(i), false);
+        isGuessed = false;
+        Random random = new Random();
+        int limit = switch (difficulty) {
+            case "easy" -> 1;
+            case "medium" -> 3;
+            case "hard" -> 5;
+            default -> 3;
+        };
+        int blockedCharactersSize = random.nextInt(word.length()-limit) + 1; //Random number of blocked characters limit depends on difficulty level
+        int[] blockedCharactersIndexes = new int[blockedCharactersSize];
+        for (int i = 0; i < blockedCharactersSize; i++) {
+            int index = random.nextInt(word.length());
+            if (containsIndex(blockedCharactersIndexes, index)) {
+                i--;
+            } else {
+                blockedCharactersIndexes[i] = index;
+            }
         }
+        for (int i = 0; i < blockedCharactersIndexes.length; i++) {
+            char currentChar = word.charAt(blockedCharactersIndexes[i]);
+            charIndexMap.computeIfAbsent(currentChar, k -> new ArrayList<>());
+            charIndexMap.get(currentChar).add(i);
+        }
+    }
+
+    private boolean containsIndex(int[] blockedCharactersIndexes, int index) { // Helper function for getCharIndexMap to check if the index is already in the array
+        for (int blockedCharactersIndex : blockedCharactersIndexes) {
+            if (blockedCharactersIndex == index) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -112,16 +135,6 @@ public class Word {
      */
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    /**
-     * Resets the state of guessed letters in the word. Sets each letter to the
-     * initial state of not guessed (false).
-     */
-    public void setLetters() {
-        for (int i = 0; i < word.length(); i++) {
-            letters.put(word.charAt(i), false);
-        }
     }
 
     /**
@@ -163,38 +176,38 @@ public class Word {
      * @return A string displaying guessed and unguessed letters.
      */
     public String retrieveGuessedLetters() {
-        StringBuilder sb = new StringBuilder();
+        StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < word.length(); i++) {
-            if (letters.get(word.charAt(i))) {
-                sb.append(word.charAt(i));
+            if (charIndexMap.containsKey(word.charAt(i))) {
+                stringBuilder.append("_ ");
+            } else {
+                stringBuilder.append(word.charAt(i)).append(" ");
             }
-            else {
-                sb.append("_");
-            }
-            sb.append(" ");
         }
-        return sb.toString();
+        return stringBuilder.toString();
     }
+
+
 
     /**
      * Checks if a guessed letter is in the word and updates its guessed state.
-     * 
+     *
      * <p>
      * If the guessed letter is in the word, the method updates the corresponding
      * entry in the letters {@code HashMap} to true and returns true. If the guessed letter
      * is not in the word, the method returns false.
      * </p>
-     * 
+     *
      * @param letter The letter guessed by the player.
      * @return True if the letter is in the word, false otherwise.
      */
     public boolean guessLetter(char letter) {
-        if (letters.containsKey(letter)) {
-            letters.put(letter, true);
-            if (!letters.containsValue(false)) {
-                isGuessed = true;
-            }
+        if (charIndexMap.containsKey(letter)){
+            charIndexMap.remove(letter);
             return true;
+        }
+        if(charIndexMap.isEmpty()){
+            isGuessed = true;
         }
         return false;
     }

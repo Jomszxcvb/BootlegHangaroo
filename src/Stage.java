@@ -2,17 +2,19 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Stage {
-    private WordGenerator wordGenerator;
     private Word word;
-
     private static int stageNumber;
-
     public static final int MIN_STAGE = 1;
 
     Stage(GameMode gameMode){
-        wordGenerator = new WordGenerator(gameMode);
+        WordGenerator wordGenerator = new WordGenerator(gameMode);
         stageNumber = MIN_STAGE;
-        word = wordGenerator.generateWord();
+        try{
+            word = wordGenerator.generateWord();
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     public static int getStageNumber() {
@@ -40,21 +42,16 @@ public class Stage {
                 System.out.println("The word is: " + word.getWord());
                 player.incScore();
                 stageNumber++;
-                word = wordGenerator.generateWord();
             }
         }
 
 
     }
+    //Test Code
 
-    /**
-     * TEST CODE
-    public static void main(String[] args) {
-        Player player = new Player("Jom");
-        Stage stage = new Stage(GameMode.CLASSIC);
-        stage.playStage(player);
-    }
-     */
+//    public static void main(String[] args) {
+//        Player player = new Player("Jom");
+//    }
 }
 
 
