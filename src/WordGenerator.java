@@ -13,7 +13,6 @@ import org.w3c.dom.NodeList;
 
 import java.util.Collections;
 
-
 /**
  * The {@code WordGenerator} class is responsible for generating random words from XML files
  * based on the difficulty level of the game. It reads words from separate files for
@@ -49,47 +48,55 @@ public class WordGenerator {
 
         private String path;
 
+        /**
+         * Constructs a FilePath with the specified path.
+         * 
+         * @param path The file path for the difficulty level.
+         */
         FilePath(String path) {
             this.path = path;
         }
 
+        /**
+         * Gets the file path for the difficulty level.
+         * 
+         * @return The file path for the difficulty level.
+         */
         public String getPath() {
             return path;
         }
     }
 
+    private static final int FIRST_INDEX = 0;
+
     private List<Word> easyWords = new ArrayList<Word>();
     private List<Word> mediumWords = new ArrayList<Word>();
     private List<Word> hardWords = new ArrayList<Word>();
-
-    private List<Word> words = new ArrayList<Word>();
-
-    private File wordsFile;
 
     /**
      * Constructor for WordGenerator class. Reads words from XML files
      * for each difficulty level and initializes word lists.
      */
-    public WordGenerator(GameMode gameMode) {
+    public WordGenerator() {
         try {
             for (String path : Arrays.asList(FilePath.EASY_PATH.getPath(), FilePath.MEDIUM_PATH.getPath(), FilePath.HARD_PATH.getPath())) {
                 
-                this.wordsFile = new File(path);
+                File wordsFile = new File(path);
 
                 DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
                 DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
-                Document doc = dBuilder.parse(this.wordsFile);
+                Document doc = dBuilder.parse(wordsFile);
                 doc.getDocumentElement().normalize();
 
                 NodeList nList = doc.getElementsByTagName(Word.TagName.WORD.getTagName());
 
-                for (int i = 0; i < nList.getLength(); i++) {
+                for (int i = FIRST_INDEX; i < nList.getLength(); i++) {
                     Node nNode = nList.item(i);
                     Element eElement = (Element) nNode;
 
                     String difficulty = eElement.getAttribute("difficulty");
-                    String name = eElement.getElementsByTagName("name").item(0).getTextContent();
-                    String description = eElement.getElementsByTagName("description").item(0).getTextContent();
+                    String name = eElement.getElementsByTagName("name").item(FIRST_INDEX).getTextContent();
+                    String description = eElement.getElementsByTagName("description").item(FIRST_INDEX).getTextContent();
 
                     switch (difficulty) {
                         case "easy":
@@ -109,51 +116,48 @@ public class WordGenerator {
             Collections.shuffle(this.easyWords);
             Collections.shuffle(this.mediumWords);
             Collections.shuffle(this.hardWords);
-            generateWords(gameMode);
+
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     /**
-     * Generates a list of words based on the specified game mode.
+     * Generates a random word based on the specified difficulty level.
      * 
-     * @param gameMode The game mode for which words need to be generated.
-     * @return A list of words for the specified game mode.
+     * @param difficulty The difficulty level for which to generate the word.
+     * @return A randomly generated word.
      */
-    private void generateWords(GameMode gameMode) {
-        words = new ArrayList<Word>();
+    public Word generateWord(Difficulty difficulty) {
+        Word word = null;
 
-        if (gameMode == GameMode.CLASSIC) {
-            for (int i = 0; i < GameMode.CLASSIC.MAX_WORDS_PER_DIFFICULTY; i++) {
-                words.add(this.easyWords.get(i));
-                words.add(this.mediumWords.get(i));
-                words.add(this.hardWords.get(i));
-            }
-            Collections.shuffle(words);
-        } 
-        else if (gameMode == GameMode.SURVIVAL){
-            for (int i = 0; i < GameMode.SURVIVAL.MAX_WORDS_PER_DIFFICULTY; i++) {
-                words.add(this.easyWords.get(i));
-                words.add(this.mediumWords.get(i));
-                words.add(this.hardWords.get(i));
-            }
-            Collections.shuffle(words);
+        if (difficulty == Difficulty.EASY) {
+            word = this.easyWords.get(FIRST_INDEX);
+            removeWord(difficulty, FIRST_INDEX);
+        } else if (difficulty == Difficulty.MEDIUM) {
+            word = this.mediumWords.get(FIRST_INDEX);
+            removeWord(difficulty, FIRST_INDEX);
+        } else if (difficulty == Difficulty.HARD) {
+            word = this.hardWords.get(FIRST_INDEX);
+            removeWord(difficulty, FIRST_INDEX);
         }
-    }
 
-    public Word generateWord() {
-        return words.get(Stage.getStageNumber() - 1);
+        return word;
     }
 
     /**
-     * TEST CODE
-    public static void main(String[] args) {
-        WordGenerator wordGenerator = new WordGenerator();
-        List<Word> words = wordGenerator.generateWords(GameMode.CLASSIC);
-        for (Word word : words) {
-            System.out.println(word.getWord());
+     * Removes the specified word from the list of words for the given difficulty level.
+     * 
+     * @param difficulty The difficulty level of the word to be removed.
+     * @param index The index of the word to be removed.
+     */
+    private void removeWord(Difficulty difficulty, int index) {
+        if (difficulty == Difficulty.EASY) {
+            this.easyWords.remove(FIRST_INDEX);
+        } else if (difficulty == Difficulty.MEDIUM) {
+            this.mediumWords.remove(FIRST_INDEX);
+        } else if (difficulty == Difficulty.HARD) {
+            this.hardWords.remove(FIRST_INDEX);
         }
     }
-    */
 }
