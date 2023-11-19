@@ -63,7 +63,7 @@ public class WordGenerator {
         }
     }
 
-    private static final int FIRST_INDEX = 0;
+
     private final Stack<Word> easyWords;
     private final Stack<Word> mediumWords;
     private final Stack<Word> hardWords;
@@ -71,7 +71,7 @@ public class WordGenerator {
      * Constructor for WordGenerator class. Reads words from XML files
      * for each difficulty level and initializes word lists.
      */
-    public WordGenerator(GameMode gameMode) {
+    public WordGenerator() {
         easyWords = new Stack<>();
         mediumWords = new Stack<>();
         hardWords = new Stack<>();
@@ -128,17 +128,17 @@ public class WordGenerator {
     public Word generateWord(Difficulty difficulty){
         Word word = null;
         switch(difficulty){
-            case Difficulty.EASY:
+            case EASY:
                 if (!easyWords.isEmpty()) {
                     word = easyWords.pop();
                 }
                 break;
-            case Difficulty.MEDIUM:
+            case MEDIUM:
                 if (!mediumWords.isEmpty()) {
                    word = mediumWords.pop();
                 }
                 break;
-            case Difficulty.HARD:
+            case HARD:
                 if (!hardWords.isEmpty()) {
                     word = hardWords.pop();
                 }
@@ -147,11 +147,11 @@ public class WordGenerator {
         return word;
     }
 
-//    public static void main(String[] args) {
-//        WordGenerator wg = new WordGenerator(GameMode.CLASSIC);
-//        for (int i = 0; i < 10; i++) {
-//            System.out.println(wg.generateWord(Difficulty.EASY).getWord());
-//        }
-//        return;
-//    }
+    public static void main(String[] args) {
+        WordGenerator wg = new WordGenerator();
+        for (int i = 0; i < 10; i++) {
+            System.out.println(wg.generateWord(Difficulty.EASY).getWord());
+        }
+        return;
+    }
 }
