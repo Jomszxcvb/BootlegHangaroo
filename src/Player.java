@@ -13,6 +13,7 @@ public class Player {
     
     
     Player(){
+        name = "Player";
         health = MAX_HEALTH;
         token = MIN_TOKEN;
         score = MIN_SCORE;
@@ -66,7 +67,6 @@ public class Player {
     public void incScore() {
         score += 1;
     }
-
     public void incToken() {
         token += 1;
     }

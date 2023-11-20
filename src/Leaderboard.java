@@ -320,11 +320,9 @@ class Leaderboard {
         }
     }
 
-    /** TEST CODE
-    public static void main(String[] args) {
-        Leaderboard leaderboard = new Leaderboard();
-        Player player = new Player("Jommel", 10);
-        leaderboard.updateLeaderboard(player);
-    }
-    */
+//    public static void main(String[] args) {
+//        Leaderboard leaderboard = new Leaderboard();
+//        Player player = new Player("Jommel");
+//        leaderboard.updateLeaderboard(player);
+//    }
 }

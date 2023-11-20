@@ -2,14 +2,13 @@ import java.util.*;
 
 public class Stage {
     private final Word word;
-    private static int stageNumber;
+    public static int stageNumber = 0;
     public static final int MIN_STAGE = 1;
     private final Map<Character, List<Integer>> charIndexMap;
     private final String string;
     private boolean isGuessed = false;
 
     Stage(WordGenerator wordGenerator, Difficulty difficulty) {
-        stageNumber = MIN_STAGE;
         word = wordGenerator.generateWord(difficulty);
         string = word.getWord();
         Random random = new Random();
@@ -80,25 +79,36 @@ public class Stage {
         while (player.getHealth() != Player.NO_HEALTH && !getIsGuessed()) {
             System.out.println("Stage " + stageNumber);
             player.displayPlayerInfo();
+            switch (player.getHealth()) {
+                case 3 -> System.out.println(Art.kangarooState[0]);
+                case 2 -> System.out.println(Art.kangarooState[1]);
+                case 1 -> System.out.println(Art.kangarooState[2]);
+                case 0 -> System.out.println(Art.kangarooState[3]);
+            }
             System.out.println("Guess the word: ");
             System.out.println(retrieveGuessedLetters() +"\n"+ word.getDescription());
             System.out.println("Enter your guess: ");
             if (guessLetter(player.getChar())) {
-                System.out.println("Correct!");
+                System.out.print(Art.correct);
             } else {
-                System.out.println("Wrong!");
+                System.out.print(Art.wrong);
                 player.decHealth();
             }
         }
         if (getIsGuessed()) {
-            System.out.println(retrieveGuessedLetters() +"\n"+ word.getDescription());
+            System.out.println(Art.win);
+            System.out.println(retrieveGuessedLetters() + "\n" + word.getDescription());
             player.incScore();
             stageNumber++;
         }
-        else{
-            System.out.println("Game Over!");
+        else if (!getIsGuessed() && player.getHealth() != Player.NO_HEALTH) {
+            System.out.println(Art.lose);
         }
+
     }
+
+
+
 }
 
 

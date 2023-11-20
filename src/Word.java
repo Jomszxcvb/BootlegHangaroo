@@ -116,35 +116,6 @@ public class Word {
      */
 
 
-    /**
-     * Retrieves the state of guessed letters in the word.
-     * 
-     * <p>
-     * Constructs a string representing the current state of guessed letters in the
-     * word. Guessed letters are displayed, and unguessed letters are represented
-     * by underscores.
-     * </p>
-     * 
-     * @return A string displaying guessed and unguessed letters.
-     */
-
-
-
-
-    /**
-     * Checks if a guessed letter is in the word and updates its guessed state.
-     *
-     * <p>
-     * If the guessed letter is in the word, the method updates the corresponding
-     * entry in the letters {@code HashMap} to true and returns true. If the guessed letter
-     * is not in the word, the method returns false.
-     * </p>
-     *
-     * @param letter The letter guessed by the player.
-     * @return True if the letter is in the word, false otherwise.
-     */
-
-
 //    public static void main(String[] args) {
 //        Word word = new Word("hello", "A greeting.", "easy");
 //        System.out.println(word.word);
