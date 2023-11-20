@@ -7,22 +7,23 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        WordGenerator wordGenerator = new WordGenerator();
-        System.out.print(Art.title);
-        System.out.print(Art.kangarooState[4]);
-        System.out.print("Enter player name: ");
-        Player player = new Player(scanner.nextLine());
-        System.out.print(Art.selectDifficulty);
-        System.out.print("Select: ");
-        Difficulty difficulty = switch (scanner.next().charAt(0)) {
-            case '1' -> Difficulty.EASY;
-            case '2' -> Difficulty.MEDIUM;
-            case '3' -> Difficulty.HARD;
-            default -> throw new IllegalStateException("Unexpected value: " + scanner.next().charAt(0));
-        };
-        try{
-            while(true) {
+        try (scanner) {
+            WordGenerator wordGenerator = new WordGenerator();
+            System.out.print(Art.title);
+            System.out.print(Art.kangarooState[4]);
+            System.out.print("Enter player name: ");
+            Player player = new Player(scanner.nextLine());
+            System.out.print(Art.selectDifficulty);
+            System.out.print("Select: ");
+            Difficulty difficulty = switch (scanner.next().charAt(0)) {
+                case '1' -> Difficulty.EASY;
+                case '2' -> Difficulty.MEDIUM;
+                case '3' -> Difficulty.HARD;
+                default -> throw new IllegalStateException("Unexpected value: " + scanner.next().charAt(0));
+            };
+            while (true) {
                 player.setHealth(Player.MAX_HEALTH);
+                System.out.println(Art.title);
                 System.out.print(Art.menu);
                 System.out.print("Enter: ");
                 char choice = scanner.next().charAt(0);
@@ -41,7 +42,7 @@ public class Main {
                         switch (GameMode) {
                             case '1':
                                 wordGenerator = new WordGenerator();
-                                while (Stage.stageNumber <=5 && player.getHealth() != 0) {
+                                while (Stage.stageNumber <= 5 && player.getHealth() != 0) {
                                     System.out.print(Art.gameModeClassic);
                                     new Stage(wordGenerator, difficulty).playStage(player);
                                 }
@@ -56,11 +57,11 @@ public class Main {
                                 break;
                             case '2':
                                 wordGenerator = new WordGenerator();
-                                while(player.getHealth()!=0){
+                                while (player.getHealth() != 0) {
                                     new Stage(wordGenerator, difficulty).playStage(player);
                                 }
                                 System.out.print(Art.gameOver);
-                                System.out.println("Final score: "+ player.getScore());
+                                System.out.println("Final score: " + player.getScore());
                                 break;
                             default:
                                 System.out.println("Invalid choice!");
@@ -92,12 +93,8 @@ public class Main {
                 }
                 scanner.nextLine();
             }
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             System.out.println("Error has occurred.");
-        }
-        finally {
-            scanner.close();
         }
 
 
