@@ -97,13 +97,13 @@ public class WordGenerator {
 
                     switch (wordDifficulty.toLowerCase()) {
                         case "easy":
-                            easyWords.push(new Word(name, description, Difficulty.EASY));
+                            easyWords.push(new Word(name, description));
                             break;
                         case "medium":
-                            mediumWords.push(new Word(name, description, Difficulty.MEDIUM));
+                            mediumWords.push(new Word(name, description));
                             break;
                         case "hard":
-                            hardWords.push(new Word(name, description, Difficulty.HARD));
+                            hardWords.push(new Word(name, description));
                             break;
                         default:
                             break;

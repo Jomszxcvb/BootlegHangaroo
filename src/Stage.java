@@ -80,35 +80,36 @@ public class Stage {
             System.out.println("Stage " + stageNumber);
             player.displayPlayerInfo();
             switch (player.getHealth()) {
-                case 3 -> System.out.println(Art.kangarooState[0]);
-                case 2 -> System.out.println(Art.kangarooState[1]);
-                case 1 -> System.out.println(Art.kangarooState[2]);
-                case 0 -> System.out.println(Art.kangarooState[3]);
+                case 3 -> System.out.println(Art.KANGAROO_STATE[0]);
+                case 2 -> System.out.println(Art.KANGAROO_STATE[1]);
+                case 1 -> System.out.println(Art.KANGAROO_STATE[2]);
+                case 0 -> System.out.println(Art.KANGAROO_STATE[3]);
             }
             System.out.println("Guess the word: ");
             System.out.println(retrieveGuessedLetters() +"\n"+ word.getDescription());
             System.out.println("Enter your guess: ");
             if (guessLetter(player.getChar())) {
-                System.out.print(Art.correct);
+                System.out.print(Art.CORRECT);
             } else {
-                System.out.print(Art.wrong);
+                System.out.print(Art.WRONG);
                 player.decHealth();
             }
         }
         if (getIsGuessed()) {
-            System.out.println(Art.win);
+            System.out.println(Art.WIN);
             System.out.println(retrieveGuessedLetters() + "\n" + word.getDescription());
             player.incScore();
             stageNumber++;
         }
         else if (!getIsGuessed() && player.getHealth() != Player.NO_HEALTH) {
-            System.out.println(Art.lose);
+            System.out.println(Art.LOSE);
         }
 
     }
 
-
-
+    static void refresh() {
+        stageNumber = MIN_STAGE;
+    }
 }
 
 

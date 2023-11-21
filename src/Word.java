@@ -28,7 +28,7 @@ public class Word {
     /**
      * Enumeration representing XML tag names.
      */
-    public static enum TagName {
+    public enum TagName {
         WORD("word"), DESCRIPTION("description");
 
         private final String tagName;
@@ -45,7 +45,7 @@ public class Word {
     /**
      * Enumeration representing XML attribute names.
      */
-    public static enum Attributes {
+    public enum Attributes {
         DIFFICULTY("difficulty");
 
         private final String attribute;
@@ -69,7 +69,7 @@ public class Word {
      */
     private String description;
 
-    public Word(String word, String description, Difficulty difficulty) {
+    public Word(String word, String description) {
         this.word = word;
         this.description = description;
     }

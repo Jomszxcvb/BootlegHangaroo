@@ -85,4 +85,11 @@ public class Player {
         System.out.println("Token: " + token);
         System.out.println("Score: " + score);
     }
+
+    void refresh() {
+        name = "Player";
+        health = MAX_HEALTH;
+        token = MIN_TOKEN;
+        score = MIN_SCORE;
+    }
 }

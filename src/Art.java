@@ -1,22 +1,22 @@
 public class Art {
 
-    public static String title = """
+    public static final String TITLE = """
                 ░█░█░█▀█░█▀█░█▀▀░█▀█░█▀▄░█▀█░█▀█
                 ░█▀█░█▀█░█░█░█░█░█▀█░█▀▄░█░█░█░█
                 ░▀░▀░▀░▀░▀░▀░▀▀▀░▀░▀░▀░▀░▀▀▀░▀▀▀            
                 """;
 
-    public static String gameModeSurvival = """
+    public static final String GAME_MODE_SURVIVAL = """
                 ░█▀▀░█░█░█▀▄░█░█░▀█▀░█░█░█▀█░█░░
                 ░▀▀█░█░█░█▀▄░▀▄▀░░█░░▀▄▀░█▀█░█░░
                 ░▀▀▀░▀▀▀░▀░▀░░▀░░▀▀▀░░▀░░▀░▀░▀▀▀
                     """;
-    public static String gameModeClassic = """
+    public static final String GAME_MODE_CLASSIC = """
                 ░█▀▀░█░░░█▀█░█▀▀░█▀▀░▀█▀░█▀▀
                 ░█░░░█░░░█▀█░▀▀█░▀▀█░░█░░█░░
                 ░▀▀▀░▀▀▀░▀░▀░▀▀▀░▀▀▀░▀▀▀░▀▀▀             
                 """;
-    public static String[] kangarooState = {"""
+    public static final String[] KANGAROO_STATE = {"""
                    |\\\\._
                     |    ^^__
                      \\    _.P
@@ -96,7 +96,7 @@ public class Art {
                  `\\______)___)          
     """
 };
-    public static String win = """
+    public static final String WIN = """
                 ░█░█░█▀█░█░█░░░█░█░▀█▀░█▀█░█
                 ░░█░░█░█░█░█░░░█▄█░░█░░█░█░▀
                 ░░▀░░▀▀▀░▀▀▀░░░▀░▀░▀▀▀░▀░▀░▀ 
@@ -104,13 +104,13 @@ public class Art {
 
 
 
-    public static String lose = """
+    public static final String LOSE = """
                 ░█░█░█▀█░█░█░░░█░░░█▀█░█▀▀░█▀▀░█
                 ░░█░░█░█░█░█░░░█░░░█░█░▀▀█░█▀▀░▀
                 ░░▀░░▀▀▀░▀▀▀░░░▀▀▀░▀▀▀░▀▀▀░▀▀▀░▀
                 """;
 
-    public static String menu = """
+    public static final String MENU = """
                ░█▀░░▀█░░▀█░░░░█▀█░█▀▀░█░█░░░█▀█░█░░░█▀█░█░█░█▀▀░█▀▄         \s
                ░█░░░░█░░░█░░░░█░█░█▀▀░█▄█░░░█▀▀░█░░░█▀█░░█░░█▀▀░█▀▄         \s
                ░▀▀░░▀▀▀░▀▀░░░░▀░▀░▀▀▀░▀░▀░░░▀░░░▀▀▀░▀░▀░░▀░░▀▀▀░▀░▀         \s
@@ -132,7 +132,7 @@ public class Art {
 //[3] Leaderboard
 //[4] Difficulty
 //[5] Instructions
-    public static String selectDifficulty = """
+    public static final String SELECT_DIFFICULTY = """
                 ░█▀░░▀█░░▀█░░░░█▀▀░█▀█░█▀▀░█░█       \s
                 ░█░░░░█░░░█░░░░█▀▀░█▀█░▀▀█░░█░       \s
                 ░▀▀░░▀▀▀░▀▀░░░░▀▀▀░▀░▀░▀▀▀░░▀░       \s
@@ -145,30 +145,30 @@ public class Art {
                                                     
                                     """;
 
-    public static String gameOver = """
+    public static final String GAME_OVER = """
                         ░█▀▀░█▀█░█▄█░█▀▀░█▀█░█░█░█▀▀░█▀▄
                         ░█░█░█▀█░█░█░█▀▀░█░█░▀▄▀░█▀▀░█▀▄
                         ░▀▀▀░▀░▀░▀░▀░▀▀▀░▀▀▀░░▀░░▀▀▀░▀░▀
                 """;
 
-    public static String congratulations = """
+    public static final String CONGRATULATIONS = """
                         ░█▀▀░█▀█░█▀█░█▀▀░█▀▄░█▀█░▀█▀░█░█░█░░░█▀█░▀█▀░▀█▀░█▀█░█▀█░█▀▀░█
                         ░█░░░█░█░█░█░█░█░█▀▄░█▀█░░█░░█░█░█░░░█▀█░░█░░░█░░█░█░█░█░▀▀█░▀
                         ░▀▀▀░▀▀▀░▀░▀░▀▀▀░▀░▀░▀░▀░░▀░░▀▀▀░▀▀▀░▀░▀░░▀░░▀▀▀░▀▀▀░▀░▀░▀▀▀░▀ 
                 """;
 
-    public static String correct = """
+    public static final String CORRECT = """
                 ░█▀▀░█▀█░█▀▄░█▀▄░█▀▀░█▀▀░▀█▀░█
                 ░█░░░█░█░█▀▄░█▀▄░█▀▀░█░░░░█░░▀
                 ░▀▀▀░▀▀▀░▀░▀░▀░▀░▀▀▀░▀▀▀░░▀░░▀
                 """;
-    public static String wrong = """
+    public static final String WRONG = """
                 ░█░█░█▀▄░█▀█░█▀█░█▀▀
                 ░█▄█░█▀▄░█░█░█░█░█░█
                 ░▀░▀░▀░▀░▀▀▀░▀░▀░▀▀▀
                     """;
 
-    public static String instructions = """
+    public static final String INSTRUCTIONS = """
 Players can only guess one letter per turn.
 If the letter is in the word or phrase, it is revealed in its correct position(s). 
 If the letter is not in the word or phrase, the kangaroo takes one step closer to its predicament.
@@ -176,5 +176,9 @@ Players can keep score and play multiple rounds in survival mode
 If the players guess the correct word or phrase, they win the game
             """;
 
-
+    public static final String SURVIVAL_LEADERBOARD = """
+                ░█▀▀░█░█░█▀▄░█░█░▀█▀░█░█░█▀█░█░░░░█░░░█▀▀░█▀█░█▀▄░█▀▀░█▀▄░█▀▄░█▀█░█▀█░█▀▄░█▀▄
+                ░▀▀█░█░█░█▀▄░▀▄▀░░█░░▀▄▀░█▀█░█░░░░█░░░█▀▀░█▀█░█░█░█▀▀░█▀▄░█▀▄░█░█░█▀█░█▀▄░█░█
+                ░▀▀▀░▀▀▀░▀░▀░░▀░░▀▀▀░░▀░░▀░▀░▀▀▀░░▀▀▀░▀▀▀░▀░▀░▀▀░░▀▀▀░▀░▀░▀▀░░▀▀▀░▀░▀░▀░▀░▀▀░
+                    """;
 }

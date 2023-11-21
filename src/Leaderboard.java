@@ -213,7 +213,7 @@ class Leaderboard {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
 
@@ -251,7 +251,7 @@ class Leaderboard {
      * @param currPlayer The {@code Player} object to be updated or added to the leaderboard.
      * @throws Exception If an error occurs during the update process.
      */
-    public void updateLeaderboard(Player currPlayer) {
+    public void updateSurvival(Player currPlayer) {
         Iterator<Player> iterator = players.iterator();
         boolean playerExists = false;
 
@@ -320,9 +320,19 @@ class Leaderboard {
         }
     }
 
-//    public static void main(String[] args) {
-//        Leaderboard leaderboard = new Leaderboard();
-//        Player player = new Player("Jommel");
-//        leaderboard.updateLeaderboard(player);
-//    }
+    void displaySurvival() {
+        System.out.print(Art.SURVIVAL_LEADERBOARD);
+        for (int i = 0; i < players.size(); i++) {
+            System.out.println("[" + (i+1) + "] " + players.get(i).getName() + " - " + players.get(i).getScore() + " points");
+        }
+    }
+
+    /**
+     * TEST CODE
+    public static void main(String[] args) {
+        Leaderboard leaderboard = new Leaderboard();
+        Player player = new Player("Jommel");
+        leaderboard.updateSurvival(player);
+    }
+    */
 }
