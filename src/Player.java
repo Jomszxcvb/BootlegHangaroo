@@ -65,7 +65,7 @@ public class Player {
     }
 
     public void incScore() {
-        score += 1;
+        score += 1000;
     }
     public void incToken() {
         token += 1;

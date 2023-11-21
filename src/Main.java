@@ -20,7 +20,6 @@ public class Main {
                 default -> throw new IllegalStateException("Unexpected value: " + scanner.next().charAt(0));
             };
             while (true) {
-                player.setHealth(Player.MAX_HEALTH);
                 System.out.println(Art.TITLE);
                 System.out.print(Art.MENU);
                 System.out.print("Enter: ");
@@ -99,8 +98,5 @@ public class Main {
         } catch (Exception e) {
             System.out.println("Error has occurred.");
         }
-
-
-
     }
 }
