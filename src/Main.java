@@ -36,7 +36,7 @@ public class Main {
                         System.out.print("Select [1] or [2]: ");
                         char GameMode = scanner.next().charAt(0);
                         Stage.refresh();
-                        player.refresh();
+
 
                         switch (GameMode) {
                             case '1':
@@ -68,8 +68,7 @@ public class Main {
                                 System.out.println("Invalid choice!");
                                 break;
                         }
-
-
+                        player.refresh();
                         break;
                     case '3':
                         Leaderboard leaderboard = new Leaderboard();
